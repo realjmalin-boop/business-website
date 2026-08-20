@@ -1,0 +1,14 @@
+{
+  "name": "northline-studio-website",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A polished, dependency-free website for Northline Studio.",
+  "scripts": {
+    "dev": "node server.mjs",
+    "start": "node server.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
