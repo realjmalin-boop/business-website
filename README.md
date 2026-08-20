@@ -30,6 +30,8 @@ The quote form submits JSON to `POST /api/contact`. The Worker validates the sub
 
 ## Contact form configuration
 
+The Worker entry point is `src/worker.mjs`. Cloudflare runs that Worker before every request; `/api/contact` is handled in code and every non-API request is passed to `env.ASSETS.fetch(request)`.
+
 The Worker requires three runtime values:
 
 - `RESEND_API_KEY` — a Resend API key; always store this as a Cloudflare secret.
@@ -58,11 +60,12 @@ The site is configured for Cloudflare Workers Static Assets using Wrangler. The 
 1. Run `npm install` if dependencies are not installed yet.
 2. Run `npm run test` and `npm run build`.
 3. Sign in with `npx wrangler login` if needed.
-4. Before the first production deployment, create an ignored `.env.production` file containing the same three values shown in `.dev.vars.example`.
-5. Run `npx wrangler deploy --secrets-file .env.production` to upload the Worker and configure the required values as encrypted Cloudflare secrets in one operation.
+4. Run `npx wrangler deploy` once to convert an existing static-assets-only `business-website` project into a Worker with code and static assets.
+5. In the `business-website` Worker’s **Settings → Variables and Secrets** page, add `RESEND_API_KEY` as a secret and add `CONTACT_TO_EMAIL` and `CONTACT_FROM_EMAIL` as variables or secrets.
+6. Alternatively, create an ignored `.env.production` containing the same three values shown in `.dev.vars.example` and use `npx wrangler deploy --secrets-file .env.production` to configure them during deployment.
 
-After the secrets exist on the Worker, future updates can use `npx wrangler deploy` normally. You can also manage the three values from the Worker's **Settings → Variables and Secrets** page in Cloudflare; keep `RESEND_API_KEY` configured as a secret.
+After the bindings exist on the Worker, future updates can use `npx wrangler deploy` normally. Keep `RESEND_API_KEY` configured as a secret.
 
-Wrangler automatically runs the build command defined in `wrangler.jsonc`. The `auto-trailing-slash` setting preserves routes such as `/about/` and `/services/`, while `404-page` serves the existing custom `404.html` for missing pages. Static files remain on Workers Static Assets, and only `/api/*` routes run Worker code first.
+Wrangler automatically runs the build command defined in `wrangler.jsonc`. The `auto-trailing-slash` setting preserves routes such as `/about/` and `/services/`, while `404-page` serves the existing custom `404.html` for missing pages. Static files remain on Workers Static Assets, and the Worker explicitly forwards non-API requests through the `ASSETS` binding.
 
 The form endpoint returns browser-safe JSON errors, accepts only JSON `POST` requests, validates field lengths and formats, and uses a honeypot to suppress simple bot submissions. No CAPTCHA or contact database is included.

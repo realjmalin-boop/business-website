@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "northline-studio-website",
+  "name": "business-website",
   "compatibility_date": "2026-08-19",
   "main": "./src/worker.mjs",
   "build": {
@@ -17,17 +17,10 @@
       "./scripts/build.mjs"
     ]
   },
-  "secrets": {
-    "required": [
-      "RESEND_API_KEY",
-      "CONTACT_TO_EMAIL",
-      "CONTACT_FROM_EMAIL"
-    ]
-  },
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
-    "run_worker_first": ["/api/*"],
+    "run_worker_first": true,
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page"
   }

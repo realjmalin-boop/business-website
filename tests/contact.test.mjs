@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { handleContact } from "../src/worker.mjs";
+import { handleContact, handleRequest } from "../src/worker.mjs";
 
 const endpoint = "http://localhost/api/contact";
 const testEnvironment = {
@@ -123,4 +123,25 @@ test("Resend failures return a generic browser-safe error", async () => {
   assert.equal(response.status, 502);
   assert.equal(body.success, false);
   assert.doesNotMatch(body.message, /provider detail/i);
+});
+
+test("non-API requests are forwarded through the ASSETS binding", async () => {
+  let forwardedUrl;
+  const environment = {
+    ASSETS: {
+      fetch(request) {
+        forwardedUrl = request.url;
+        return new Response("static page", { status: 200 });
+      }
+    }
+  };
+
+  const response = await handleRequest(
+    new Request("https://business-website.example/about/"),
+    environment
+  );
+
+  assert.equal(response.status, 200);
+  assert.equal(await response.text(), "static page");
+  assert.equal(forwardedUrl, "https://business-website.example/about/");
 });
