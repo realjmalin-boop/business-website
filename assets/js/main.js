@@ -68,21 +68,74 @@ const quoteForm = document.querySelector("[data-quote-form]");
 
 if (quoteForm) {
   const status = document.querySelector("[data-form-status]");
+  const submitButton = quoteForm.querySelector('button[type="submit"]');
+  const defaultButtonText = submitButton?.textContent || "Send project details";
+  let isSubmitting = false;
 
-  quoteForm.addEventListener("submit", (event) => {
+  function showFormStatus(message, state) {
+    if (!status) return;
+    status.textContent = message;
+    status.classList.remove("is-error", "is-loading");
+    if (state === "error") status.classList.add("is-error");
+    if (state === "loading") status.classList.add("is-loading");
+    status.classList.add("is-visible");
+  }
+
+  quoteForm.addEventListener("submit", async (event) => {
     event.preventDefault();
+
+    if (isSubmitting) return;
 
     if (!quoteForm.checkValidity()) {
       quoteForm.reportValidity();
       return;
     }
 
-    status?.classList.add("is-visible");
-    status?.focus();
-    quoteForm.reset();
+    isSubmitting = true;
+    quoteForm.setAttribute("aria-busy", "true");
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = "Sending…";
+    }
+    showFormStatus("Sending your project details…", "loading");
+
+    const payload = Object.fromEntries(new FormData(quoteForm).entries());
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json().catch(() => null);
+
+      if (!response.ok || !result?.success) {
+        showFormStatus(
+          result?.message || "We couldn’t send your message right now. Please try again in a moment.",
+          "error"
+        );
+        return;
+      }
+
+      quoteForm.reset();
+      showFormStatus(result.message || "Thanks—your project details have been sent successfully.", "success");
+      status?.focus();
+    } catch {
+      showFormStatus(
+        "We couldn’t send your message right now. Please check your connection and try again.",
+        "error"
+      );
+    } finally {
+      isSubmitting = false;
+      quoteForm.removeAttribute("aria-busy");
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = defaultButtonText;
+      }
+    }
   });
 
   quoteForm.addEventListener("input", () => {
-    status?.classList.remove("is-visible");
+    if (!isSubmitting) status?.classList.remove("is-visible", "is-error", "is-loading");
   });
 }

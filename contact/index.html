@@ -6,8 +6,8 @@
     <meta name="description" content="Request a website quote from Northline Studio and tell us about your small business, current site, goals, and project needs.">
     <meta name="theme-color" content="#f5f2ea">
     <title>Start a Website Project | Northline Studio</title>
-    <link rel="stylesheet" href="/assets/css/styles.css">
-    <script src="/assets/js/main.js" defer></script>
+    <link rel="stylesheet" href="/assets/css/styles.css?v=3">
+    <script src="/assets/js/main.js?v=3" defer></script>
   </head>
   <body id="top">
     <a class="skip-link" href="#main-content">Skip to content</a>
@@ -36,17 +36,18 @@
 
           <form class="contact-form reveal" data-quote-form>
             <div class="form-intro"><h2>Project details</h2><p>Fields marked with <span aria-hidden="true">*</span> are required.</p></div>
+            <div class="form-honeypot" aria-hidden="true"><label for="company-fax">Company fax</label><input id="company-fax" name="companyFax" type="text" autocomplete="off" tabindex="-1" maxlength="120"></div>
             <div class="form-grid">
-              <div class="form-field"><label for="name">Name <span aria-hidden="true">*</span></label><input id="name" name="name" type="text" autocomplete="name" placeholder="Your name" required></div>
-              <div class="form-field"><label for="business">Business name <span aria-hidden="true">*</span></label><input id="business" name="business" type="text" autocomplete="organization" placeholder="Your business" required></div>
-              <div class="form-field"><label for="email">Email <span aria-hidden="true">*</span></label><input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@business.com" required></div>
-              <div class="form-field"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(555) 000-0000"></div>
-              <div class="form-field form-field-full"><label for="website">Existing website</label><input id="website" name="website" type="url" autocomplete="url" inputmode="url" placeholder="https://yourwebsite.com"></div>
+              <div class="form-field"><label for="name">Name <span aria-hidden="true">*</span></label><input id="name" name="name" type="text" autocomplete="name" placeholder="Your name" maxlength="100" required></div>
+              <div class="form-field"><label for="business">Business name <span aria-hidden="true">*</span></label><input id="business" name="business" type="text" autocomplete="organization" placeholder="Your business" maxlength="120" required></div>
+              <div class="form-field"><label for="email">Email <span aria-hidden="true">*</span></label><input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@business.com" maxlength="254" required></div>
+              <div class="form-field"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(555) 000-0000" maxlength="40"></div>
+              <div class="form-field form-field-full"><label for="website">Existing website</label><input id="website" name="website" type="url" autocomplete="url" inputmode="url" placeholder="https://yourwebsite.com" maxlength="300"></div>
               <div class="form-field form-field-full"><label for="project-type">Type of website needed <span aria-hidden="true">*</span></label><select id="project-type" name="projectType" required><option value="" selected disabled>Select the closest fit</option><option>New small business website</option><option>Website redesign</option><option>Landing page</option><option>Mobile-responsive rebuild</option><option>Website maintenance</option><option>Not sure yet</option></select></div>
-              <div class="form-field form-field-full"><label for="description">Tell us about the project <span aria-hidden="true">*</span></label><textarea id="description" name="description" placeholder="What does your business do? What is not working today? What would you like the new website to accomplish?" required></textarea></div>
+              <div class="form-field form-field-full"><label for="description">Tell us about the project <span aria-hidden="true">*</span></label><textarea id="description" name="description" placeholder="What does your business do? What is not working today? What would you like the new website to accomplish?" maxlength="5000" required></textarea></div>
             </div>
             <div class="form-actions"><p class="form-note">No polished brief needed. A few honest details are enough to start a useful conversation.</p><button class="button button-primary button-arrow" type="submit">Send project details</button></div>
-            <p class="form-status" role="status" tabindex="-1" data-form-status>Thanks—your form is working. Email delivery can be connected before the website is published.</p>
+            <p class="form-status" role="status" aria-live="polite" tabindex="-1" data-form-status></p>
           </form>
         </div>
       </section>

@@ -1786,6 +1786,14 @@ h3 {
   color: #929693;
 }
 
+.form-honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 .form-actions {
   display: flex;
   align-items: center;
@@ -1813,6 +1821,21 @@ h3 {
 
 .form-status.is-visible {
   display: block;
+}
+
+.form-status.is-loading {
+  background: var(--paper-deep);
+}
+
+.form-status.is-error {
+  color: #692b1f;
+  background: #f8ded7;
+}
+
+.contact-form .button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+  transform: none;
 }
 
 /* FAQ */
