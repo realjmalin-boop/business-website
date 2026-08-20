@@ -28,6 +28,14 @@ No package installation is required because the local server uses only built-in 
 
 The quote form is intentionally frontend-only. Its submit handler is isolated in `assets/js/main.js` and can later be replaced with a request to an email provider, form service or custom backend.
 
-## Deployment
+## Cloudflare Workers deployment
 
-The site is made of static files and can be hosted on Cloudflare Pages or another static host. Configure the production platform only when you are ready to publish; no Cloudflare configuration is included in this first version.
+The site is configured for Cloudflare Workers Static Assets using Wrangler. The deployment build copies only the public website into `dist/`; local server files and project configuration are not uploaded as website assets.
+
+1. Run `npm install` if dependencies are not installed yet.
+2. Run `npm run build` to prepare `dist/`.
+3. Run `npx wrangler deploy` and follow Wrangler's Cloudflare sign-in prompt if needed.
+
+`npx wrangler deploy` automatically runs the build command defined in `wrangler.jsonc`. The `auto-trailing-slash` setting preserves routes such as `/about/` and `/services/`, while `404-page` serves the existing custom `404.html` for missing pages.
+
+For a Cloudflare-flavored local preview, run `npm run preview:cloudflare`. The original `npm run dev` workflow remains unchanged at `http://127.0.0.1:4173`.

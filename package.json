@@ -5,10 +5,16 @@
   "type": "module",
   "description": "A polished, dependency-free website for Northline Studio.",
   "scripts": {
+    "build": "node scripts/build.mjs",
     "dev": "node server.mjs",
-    "start": "node server.mjs"
+    "start": "node server.mjs",
+    "preview:cloudflare": "wrangler dev",
+    "deploy": "wrangler deploy"
   },
   "engines": {
     "node": ">=18"
+  },
+  "devDependencies": {
+    "wrangler": "^4.124.0"
   }
 }
